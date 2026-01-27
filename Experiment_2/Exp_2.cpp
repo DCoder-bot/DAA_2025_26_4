@@ -11,6 +11,7 @@
 #include <climits>
 using namespace std;
 struct Node{
+     
     char ch;
     int freq;
     Node *left;
