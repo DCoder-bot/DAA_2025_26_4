@@ -1,0 +1,46 @@
+Algorithm - findCheapestPrice (Cheapest Flights Within K Stops)
+
+Approach: BFS level by level (each level = one stop used)
+
+
+Step 1: Build adjacency list
+  for each flight [u, v, price] in flights:
+    add (v, price) to adj[u]
+
+Step 2: Initialize
+  create dist array of size n, fill with INF
+  set dist[src] = 0
+  create a queue and push (src, 0)  -> (node, cost so far)
+  set stops = 0
+
+Step 3: BFS loop
+  while queue is not empty AND stops <= k:
+
+    take size = current queue size  (to process only this level)
+    make temp = copy of dist        (to avoid using updates from same level)
+
+    repeat size times:
+      pop (node, cost) from front of queue
+
+      for each neighbor (next, price) of node:
+        if cost + price < temp[next]:
+          update temp[next] = cost + price
+          push (next, cost + price) into queue
+
+    set dist = temp
+    increment stops by 1
+
+Step 4: Return result
+  if dist[dst] == INF:
+    return -1   (destination not reachable within k stops)
+  else:
+    return dist[dst]
+
+
+Key points:
+  - we process the queue level by level, one level = one stop
+  - temp array is used so that relaxations in the current level
+    do not affect other nodes in the same level
+  - we push a neighbor into the queue only if we found a cheaper
+    path to it, this keeps the queue size in check
+  - the loop runs at most k+1 times covering 0 to k stops
