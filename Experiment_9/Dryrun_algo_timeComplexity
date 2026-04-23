@@ -1,0 +1,69 @@
+# Experiment 9 - Minimum Sum Partition
+
+## Algorithm
+
+1. Compute the total sum of all elements in the array.
+2. Set target = total / 2 (integer division).
+3. Create a boolean DP array of size (target + 1), initialized to false. Set dp[0] = true.
+4. For each element in the array, iterate j from target down to the element's value. If dp[j - num] is true, set dp[j] = true.
+5. After processing all elements, scan from target down to 0. The first index s1 where dp[s1] is true gives the best achievable subset sum ≤ total/2.
+6. Return |total - 2 * s1| as the minimum difference.
+
+---
+
+## Time and Space Complexity
+
+**Time Complexity: O(n × total/2)**
+- The outer loop runs n times (once per element).
+- The inner loop runs at most total/2 times per element.
+- For the given constraints (n ≤ 100, arr[i] ≤ 1000), total ≤ 100,000 and target ≤ 50,000.
+
+**Space Complexity: O(total/2)**
+- Only a single 1D DP array of size (target + 1) is used.
+- No extra space proportional to n is needed.
+
+---
+
+## Dry Run
+
+**Input:** arr = [1, 6, 11, 5], n = 4
+
+**Total sum** = 1 + 6 + 11 + 5 = 23  
+**Target** = 23 / 2 = 11
+
+**Initial DP array (indices 0 to 11):**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|-------|---|---|---|---|---|---|---|---|---|---|----|----|
+| dp    | T | F | F | F | F | F | F | F | F | F | F  | F  |
+
+**After num = 1:**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|-------|---|---|---|---|---|---|---|---|---|---|----|----|
+| dp    | T | T | F | F | F | F | F | F | F | F | F  | F  |
+
+**After num = 6:**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|-------|---|---|---|---|---|---|---|---|---|---|----|----|
+| dp    | T | T | F | F | F | F | T | T | F | F | F  | F  |
+
+**After num = 11:**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|-------|---|---|---|---|---|---|---|---|---|---|----|----|
+| dp    | T | T | F | F | F | F | T | T | F | F | F  | T  |
+
+**After num = 5:**
+
+| Index | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|-------|---|---|---|---|---|---|---|---|---|---|----|----|
+| dp    | T | T | F | F | F | T | T | T | F | F | F  | T  |
+
+**Finding the answer:**  
+Scan from index 11 down → dp[11] = true → s1 = 11  
+s2 = 23 - 11 = 12  
+**Minimum difference = |12 - 11| = 1**
+
+**Output: 1**
